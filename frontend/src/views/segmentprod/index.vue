@@ -77,21 +77,27 @@ import {
   downloadEntries,
   listEntries,
   moduleMeta,
+  pendingShippingCount,
   runAction as applyAction,
 } from '@/api/local-service'
 import type { EntryRow } from '@/data/types'
 
 const meta = moduleMeta('segmentprod')
-const columns = ["管片编号", "管片型号", "生产模具", "钢筋笼批号", "养护天数", "出厂强度", "检验人员", "生产状态"]
+const columns = ["管片编号", "管片型号", "生产模具", "钢筋笼批号", "养护天数", "出厂强度", "检验人员", "来源报告", "生产状态"]
 const actions = ["开始浇筑", "确认养护", "办理出厂"]
 const statuses = ["待浇筑", "养护中", "待出厂", "已出厂"]
-const stats = [{"label": "养护中管片", "value": 0}, {"label": "待出厂管片", "value": 0}, {"label": "本月出厂数", "value": 0}]
 
 const rows = ref<EntryRow[]>([])
 const total = ref(0)
 const errorMessage = ref('')
 const filters = ref<Record<string, string>>({})
 const filterFields = columns.slice(0, 3)
+// 待出厂批次数读「落库那份」：与试验检测已出合格报告的数量同源对齐。
+const stats = computed(() => [
+  {"label": "养护中管片", "value": rows.value.filter((row) => String(row.status) === "养护中").length},
+  {"label": "待出厂管片（报告放行）", "value": pendingShippingCount()},
+  {"label": "本月出厂数", "value": rows.value.filter((row) => String(row.status) === "已出厂").length},
+])
 const statusSummary = computed(() =>
   statuses.map((status: string) => ({
     status,

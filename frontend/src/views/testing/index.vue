@@ -12,7 +12,7 @@
     </header>
 
     <div class="stat-row">
-      <article v-for="item in stats" :key="item.label" class="stat-card">
+      <article v-for="item in statCards" :key="item.label" class="stat-card">
         <span class="stat-label">{{ item.label }}</span>
         <strong class="stat-value">{{ item.value }}</strong>
       </article>
@@ -76,22 +76,30 @@ import { computed, onMounted, ref } from 'vue'
 import {
   downloadEntries,
   listEntries,
+  loadTestingStats,
   moduleMeta,
   runAction as applyAction,
 } from '@/api/local-service'
-import type { EntryRow } from '@/data/types'
+import type { EntryRow, TestingStats } from '@/data/types'
 
 const meta = moduleMeta('testing')
 const columns = ["委托编号", "试样类型", "检测项目", "送样日期", "检测结果", "报告编号", "检测机构", "委托状态"]
-const actions = ["送样委托", "出具报告", "登记不合格"]
+const actions = ["送样委托", "出具报告", "登记不合格", "复检"]
 const statuses = ["待送样", "检测中", "已出报告", "不合格"]
-const stats = [{"label": "待送样委托", "value": 0}, {"label": "检测中委托", "value": 0}, {"label": "不合格项", "value": 0}]
 
 const rows = ref<EntryRow[]>([])
 const total = ref(0)
 const errorMessage = ref('')
 const filters = ref<Record<string, string>>({})
 const filterFields = columns.slice(0, 3)
+const stats = ref<TestingStats>({ waiting: 0, testing: 0, issued: 0, failed: 0 })
+// 与运营概览同源：数字全部来自落库状态派生，缓存里的旧结论顶不上来。
+const statCards = computed(() => [
+  { label: '待送样委托', value: stats.value.waiting },
+  { label: '检测中委托', value: stats.value.testing },
+  { label: '已出报告', value: stats.value.issued },
+  { label: '不合格项（待复检）', value: stats.value.failed },
+])
 const statusSummary = computed(() =>
   statuses.map((status: string) => ({
     status,
@@ -128,6 +136,7 @@ function reload() {
     const payload = listEntries(meta.key, filters.value)
     rows.value = payload.items
     total.value = payload.total
+    stats.value = loadTestingStats()
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : '试验检测列表读取失败'
   }

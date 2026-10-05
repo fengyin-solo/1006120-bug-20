@@ -12,6 +12,7 @@ export const MODULES: ModuleMeta[] = [
     actions: ["办理进场", "开始调试", "办理退场"],
     actionTargets: {"办理进场": "调试中", "开始调试": "掘进中", "办理退场": "已退场"},
     metrics: ["在场盾构机", "掘进中盾构机", "待维保盾构机"],
+    terminalStatuses: ["已退场"],
   },
   {
     key: "ring",
@@ -23,6 +24,7 @@ export const MODULES: ModuleMeta[] = [
     actions: ["开始掘进", "确认完成", "申请纠偏"],
     actionTargets: {"开始掘进": "掘进中", "确认完成": "已贯通", "申请纠偏": "已纠偏"},
     metrics: ["本月掘进环数", "平均掘进速度", "纠偏环数"],
+    terminalStatuses: ["已贯通", "已纠偏"],
   },
   {
     key: "segment",
@@ -34,6 +36,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["开始拼装", "提交验收", "登记返工"],
     actionTargets: {"开始拼装": "拼装中", "提交验收": "已验收", "登记返工": "已返工"},
     metrics: ["待拼装环数", "已验收环数", "返工环数"],
+    terminalStatuses: ["已验收", "已返工"],
+    abnormalStatuses: ["已返工"],
   },
   {
     key: "grouting",
@@ -45,6 +49,7 @@ export const MODULES: ModuleMeta[] = [
     actions: ["开始注浆", "确认完成", "安排补浆"],
     actionTargets: {"开始注浆": "注浆中", "确认完成": "已完成", "安排补浆": "已补浆"},
     metrics: ["注浆总量", "待补浆记录", "平均注浆压力"],
+    terminalStatuses: ["已完成", "已补浆"],
   },
   {
     key: "muck",
@@ -56,6 +61,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["安排装车", "确认消纳", "登记滞留"],
     actionTargets: {"安排装车": "运输中", "确认消纳": "已消纳", "登记滞留": "已滞留"},
     metrics: ["今日外运方量", "运输中车辆", "滞留车次"],
+    terminalStatuses: ["已消纳", "已滞留"],
+    abnormalStatuses: ["已滞留"],
   },
   {
     key: "settlement",
@@ -67,6 +74,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["提交监测", "发布预警", "确认稳定"],
     actionTargets: {"提交监测": "预警", "发布预警": "报警", "确认稳定": "已稳定"},
     metrics: ["正常测点", "预警测点", "最大累计沉降"],
+    terminalStatuses: ["已稳定"],
+    abnormalStatuses: ["预警", "报警"],
   },
   {
     key: "axis",
@@ -78,6 +87,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["提交测量", "执行纠偏", "标记超限"],
     actionTargets: {"提交测量": "测量中", "执行纠偏": "已纠偏", "标记超限": "超限"},
     metrics: ["待测量环数", "超限环数", "平均偏差"],
+    terminalStatuses: ["已纠偏", "超限"],
+    abnormalStatuses: ["超限"],
   },
   {
     key: "cutter",
@@ -89,17 +100,19 @@ export const MODULES: ModuleMeta[] = [
     actions: ["登记检查", "安排更换", "报废刀具"],
     actionTargets: {"登记检查": "待更换", "安排更换": "已更换", "报废刀具": "已报废"},
     metrics: ["正常刀具", "待更换刀具", "累计更换数"],
+    terminalStatuses: ["已更换", "已报废"],
   },
   {
     key: "segmentprod",
     name: "管片生产",
     entity: "管片",
     desc: "维护管片，围绕管片编号、管片型号、生产模具、钢筋笼批号做登记、筛选与状态流转。",
-    fields: ["管片编号", "管片型号", "生产模具", "钢筋笼批号", "养护天数", "出厂强度", "检验人员", "生产状态"],
+    fields: ["管片编号", "管片型号", "生产模具", "钢筋笼批号", "养护天数", "出厂强度", "检验人员", "来源报告", "生产状态"],
     statuses: ["待浇筑", "养护中", "待出厂", "已出厂"],
     actions: ["开始浇筑", "确认养护", "办理出厂"],
     actionTargets: {"开始浇筑": "养护中", "确认养护": "待出厂", "办理出厂": "已出厂"},
     metrics: ["养护中管片", "待出厂管片", "本月出厂数"],
+    terminalStatuses: ["已出厂"],
   },
   {
     key: "mortar",
@@ -111,6 +124,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["开始拌制", "提交检验", "废弃批次"],
     actionTargets: {"开始拌制": "拌制中", "提交检验": "检验合格", "废弃批次": "已废弃"},
     metrics: ["待拌制批次", "合格批次", "废弃批次"],
+    terminalStatuses: ["检验合格", "已废弃"],
+    abnormalStatuses: ["已废弃"],
   },
   {
     key: "ventilation",
@@ -122,6 +137,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["启动机组", "停机检修", "登记故障"],
     actionTargets: {"启动机组": "运行中", "停机检修": "已停机", "登记故障": "故障"},
     metrics: ["运行机组", "故障机组", "有害气体超限"],
+    terminalStatuses: ["已停机"],
+    abnormalStatuses: ["故障"],
   },
   {
     key: "building",
@@ -133,6 +150,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["布设测点", "发布报警", "解除报警"],
     actionTargets: {"布设测点": "监测中", "发布报警": "已报警", "解除报警": "已解除"},
     metrics: ["监测中对象", "报警对象", "待布点对象"],
+    terminalStatuses: ["已解除"],
+    abnormalStatuses: ["预警", "已报警"],
   },
   {
     key: "utility",
@@ -144,6 +163,7 @@ export const MODULES: ModuleMeta[] = [
     actions: ["提交探查", "安排迁改", "确认恢复"],
     actionTargets: {"提交探查": "已探明", "安排迁改": "迁改中", "确认恢复": "已恢复"},
     metrics: ["待探查管线", "迁改中管线", "已恢复管线"],
+    terminalStatuses: ["已恢复"],
   },
   {
     key: "progress",
@@ -155,6 +175,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["开始节点", "确认完成", "登记延期"],
     actionTargets: {"开始节点": "进行中", "确认完成": "已完成", "登记延期": "已延期"},
     metrics: ["进行中节点", "已完成节点", "延期节点"],
+    terminalStatuses: ["已完成", "已延期"],
+    abnormalStatuses: ["已延期"],
   },
   {
     key: "testing",
@@ -163,9 +185,12 @@ export const MODULES: ModuleMeta[] = [
     desc: "维护试验委托，围绕委托编号、试样类型、检测项目、送样日期做登记、筛选与状态流转。",
     fields: ["委托编号", "试样类型", "检测项目", "送样日期", "检测结果", "报告编号", "检测机构", "委托状态"],
     statuses: ["待送样", "检测中", "已出报告", "不合格"],
-    actions: ["送样委托", "出具报告", "登记不合格"],
-    actionTargets: {"送样委托": "检测中", "出具报告": "已出报告", "登记不合格": "不合格"},
+    actions: ["送样委托", "出具报告", "登记不合格", "复检"],
+    actionTargets: {"送样委托": "检测中", "出具报告": "已出报告", "登记不合格": "不合格", "复检": "检测中"},
     metrics: ["待送样委托", "检测中委托", "不合格项"],
+    // 「已出报告」才是办结；「不合格」只是异常挂起，必须复检后才能再出报告。
+    terminalStatuses: ["已出报告"],
+    abnormalStatuses: ["不合格"],
   },
   {
     key: "drill",
@@ -177,6 +202,7 @@ export const MODULES: ModuleMeta[] = [
     actions: ["提交方案", "确认完成", "登记整改"],
     actionTargets: {"提交方案": "已策划", "确认完成": "已完成", "登记整改": "已整改"},
     metrics: ["待策划演练", "已完成演练", "待整改问题"],
+    terminalStatuses: ["已完成", "已整改"],
   },
   {
     key: "crew",
@@ -188,6 +214,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["办理进场", "办理退场", "登记停工"],
     actionTargets: {"办理进场": "在场", "办理退场": "已退场", "登记停工": "已停工"},
     metrics: ["在场班组", "在场人数", "停工班组"],
+    terminalStatuses: ["已退场", "已停工"],
+    abnormalStatuses: ["已停工"],
   },
   {
     key: "safety",
@@ -199,6 +227,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["提交巡检", "派发整改", "确认闭环"],
     actionTargets: {"提交巡检": "已巡检", "派发整改": "待整改", "确认闭环": "已闭环"},
     metrics: ["待巡检区域", "待整改隐患", "已闭环隐患"],
+    terminalStatuses: ["已闭环"],
+    abnormalStatuses: ["待整改"],
   },
 ]
 
