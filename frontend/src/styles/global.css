@@ -35,3 +35,10 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .error-text { color: #b42318; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
 .legend-item { background: #eef2f7; border-radius: 999px; padding: 2px 10px; }
+.notice-text { color: #067647; }
+.modal-mask { position: fixed; inset: 0; background: rgba(16, 24, 40, 0.45); display: flex; align-items: center; justify-content: center; z-index: 10; }
+.modal-card { background: #fff; border-radius: 10px; padding: 18px 20px; width: 380px; border: 1px solid var(--border); }
+.modal-card h3 { margin: 0 0 4px; font-size: 16px; }
+.modal-sub { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
+.modal-tip { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }

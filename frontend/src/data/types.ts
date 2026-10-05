@@ -30,6 +30,8 @@ export type PageResult = {
 export type ActionResult = {
   ok: boolean
   message: string
+  /** 幂等命中：重复提交沿用头一份报告，不算失败。 */
+  duplicate?: boolean
 }
 
 export type OverviewResult = {
